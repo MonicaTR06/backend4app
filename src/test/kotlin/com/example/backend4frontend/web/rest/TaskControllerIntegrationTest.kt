@@ -6,12 +6,12 @@ import com.example.backend4frontend.errorhandler.BadRequestException
 import com.example.backend4frontend.errorhandler.TaskNotFoundException
 import com.example.backend4frontend.data.domain.TaskStatus
 import com.example.backend4frontend.data.domain.Priority
-import com.example.backend4frontend.data.dto.TaskCreateRequest
-import com.example.backend4frontend.data.dto.TaskFetchResponse
-import com.example.backend4frontend.data.dto.TaskUpdateRequest
+import com.example.backend4frontend.data.dto.task.TaskCreateRequest
+import com.example.backend4frontend.data.dto.task.TaskFetchResponse
+import com.example.backend4frontend.data.dto.task.TaskUpdateRequest
 import com.example.backend4frontend.data.domain.entity.MAX_DESCRIPTION_LENGTH
 import com.example.backend4frontend.data.domain.entity.MIN_DESCRIPTION_LENGTH
-import com.example.backend4frontend.service.TaskService
+import com.example.backend4frontend.service.task.TaskService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -41,7 +41,6 @@ internal class TaskControllerIntegrationTest(@Autowired private val mockMvc: Moc
     private val dummyDto1 = TaskFetchResponse(
         33,
         "test1",
-        isReminderSet = false,
         isTaskOpen = false,
         createdOn = LocalDateTime.now(),
         priority = Priority.LOW
@@ -58,7 +57,6 @@ internal class TaskControllerIntegrationTest(@Autowired private val mockMvc: Moc
         val taskFetchDto = TaskFetchResponse(
             44,
             "test2",
-            isReminderSet = false,
             isTaskOpen = false,
             createdOn = LocalDateTime.now(),
             priority = Priority.LOW
@@ -80,7 +78,6 @@ internal class TaskControllerIntegrationTest(@Autowired private val mockMvc: Moc
         val fetchDto = TaskFetchResponse(
             44,
             "test2",
-            isReminderSet = false,
             isTaskOpen = true,
             createdOn = LocalDateTime.now(),
             priority = Priority.LOW
@@ -112,7 +109,7 @@ internal class TaskControllerIntegrationTest(@Autowired private val mockMvc: Moc
 
         resultActions.andExpect(MockMvcResultMatchers.status().`is`(200))
         resultActions.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-        resultActions.andExpect(MockMvcResultMatchers.jsonPath("$.description").value(dummyDto1.description))
+        resultActions.andExpect(MockMvcResultMatchers.jsonPath("$.description").value(dummyDto1.title))
     }
 
     @Test
@@ -135,8 +132,7 @@ internal class TaskControllerIntegrationTest(@Autowired private val mockMvc: Moc
     @Test
     fun `given task creation when description is the same to another then check for bad request exception`() {
         val request = TaskCreateRequest(
-            description = "t",
-            isReminderSet = false,
+            title = "t",
             isTaskOpen = false,
             priority = Priority.LOW
         )
@@ -156,15 +152,13 @@ internal class TaskControllerIntegrationTest(@Autowired private val mockMvc: Moc
     @Test
     fun `given create task request when task gets created then check for correct property`() {
         val request = TaskCreateRequest(
-            description = "test for db",
-            isReminderSet = false,
+            title = "test for db",
             isTaskOpen = false,
             priority = Priority.LOW
         )
         val fetchDto = TaskFetchResponse(
             0,
             "test for db",
-            isReminderSet = false,
             isTaskOpen = false,
             createdOn = LocalDateTime.now(),
             priority = Priority.LOW
@@ -189,14 +183,12 @@ internal class TaskControllerIntegrationTest(@Autowired private val mockMvc: Moc
 
         val request = TaskUpdateRequest(
             "update task",
-            isReminderSet = false,
             isTaskOpen = false,
             priority = Priority.LOW
         )
         val dummyDto = TaskFetchResponse(
             44,
-            request.description ?: "",
-            isReminderSet = true,
+            request.title ?: "",
             isTaskOpen = true,
             createdOn = dateTime,
             priority = Priority.MEDIUM
@@ -211,8 +203,7 @@ internal class TaskControllerIntegrationTest(@Autowired private val mockMvc: Moc
 
         resultActions.andExpect(MockMvcResultMatchers.status().isOk)
         resultActions.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-        resultActions.andExpect(MockMvcResultMatchers.jsonPath("$.description").value(dummyDto.description))
-        resultActions.andExpect(MockMvcResultMatchers.jsonPath("$.isReminderSet").value(dummyDto.isReminderSet))
+        resultActions.andExpect(MockMvcResultMatchers.jsonPath("$.description").value(dummyDto.title))
         resultActions.andExpect(MockMvcResultMatchers.jsonPath("$.isTaskOpen").value(dummyDto.isTaskOpen))
     }
 

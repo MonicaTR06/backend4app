@@ -4,13 +4,15 @@ import com.example.backend4frontend.errorhandler.BadRequestException
 import com.example.backend4frontend.errorhandler.TaskNotFoundException
 import com.example.backend4frontend.data.domain.TaskStatus
 import com.example.backend4frontend.data.domain.Priority
-import com.example.backend4frontend.data.dto.TaskCreateRequest
-import com.example.backend4frontend.data.dto.TaskFetchResponse
-import com.example.backend4frontend.data.dto.TaskUpdateRequest
+import com.example.backend4frontend.data.dto.task.TaskCreateRequest
+import com.example.backend4frontend.data.dto.task.TaskFetchResponse
+import com.example.backend4frontend.data.dto.task.TaskUpdateRequest
 import com.example.backend4frontend.data.domain.entity.MAX_DESCRIPTION_LENGTH
 import com.example.backend4frontend.data.domain.entity.MIN_DESCRIPTION_LENGTH
 import com.example.backend4frontend.data.domain.entity.Task
 import com.example.backend4frontend.repository.TaskRepository
+import com.example.backend4frontend.service.task.TaskService
+import com.example.backend4frontend.service.task.TaskServiceImpl
 import com.example.backend4frontend.util.TaskTimestamp
 import com.example.backend4frontend.util.converter.TaskMapper
 import io.mockk.MockKAnnotations
@@ -117,7 +119,7 @@ internal class TaskServiceTest {
 
     @Test
     fun `when task gets created with non unique description then check for bad request exception`() {
-        every { mockRepository.existsByDescription(any()) } returns true
+        every { mockRepository.existsByTitle(any()) } returns true
         val exception = assertThrows<BadRequestException> { objectUnderTest.createTask(createRequest) }
 
         assertThat(exception.message).isEqualTo("A task with the description '${createRequest.description}' already exists")

@@ -1,10 +1,11 @@
-package com.example.backend4frontend.service
+package com.example.backend4frontend.service.task
 
 import com.example.backend4frontend.data.domain.TaskStatus
-import com.example.backend4frontend.data.dto.TaskCreateRequest
-import com.example.backend4frontend.data.dto.TaskFetchResponse
-import com.example.backend4frontend.data.dto.TaskUpdateRequest
+import com.example.backend4frontend.data.dto.task.TaskCreateRequest
+import com.example.backend4frontend.data.dto.task.TaskFetchResponse
+import com.example.backend4frontend.data.dto.task.TaskUpdateRequest
 import com.example.backend4frontend.data.domain.entity.MAX_DESCRIPTION_LENGTH
+import com.example.backend4frontend.data.domain.entity.MAX_TITLE_LENGTH
 import com.example.backend4frontend.data.domain.entity.MIN_DESCRIPTION_LENGTH
 import com.example.backend4frontend.data.domain.entity.Task
 import com.example.backend4frontend.errorhandler.BadRequestException
@@ -40,12 +41,13 @@ class TaskServiceImpl(
     }
 
     override fun createTask(createRequest: TaskCreateRequest): TaskFetchResponse {
-        val descriptionLength: Int = createRequest.description.length
-        if (descriptionLength < MIN_DESCRIPTION_LENGTH || descriptionLength > MAX_DESCRIPTION_LENGTH) {
-            throw BadRequestException("Description must be between $MIN_DESCRIPTION_LENGTH and $MAX_DESCRIPTION_LENGTH characters in length")
+        val titleLength: Int = createRequest.title.length
+        if (titleLength < MIN_DESCRIPTION_LENGTH || titleLength > MAX_TITLE_LENGTH) {
+            throw BadRequestException("Title must be between $MIN_DESCRIPTION_LENGTH and $MAX_TITLE_LENGTH characters in length")
         }
-        if (repository.existsByDescription(createRequest.description)) {
-            throw BadRequestException("A task with the description '${createRequest.description}' already exists")
+
+        if (repository.existsByTitle(createRequest.title)) {
+            throw BadRequestException("A task with the title '${createRequest.title}' already exists")
         }
         val task: Task = mapper.toEntity(createRequest, taskTimestamp.createClockWithZone())
         val savedTask: Task = repository.save(task)

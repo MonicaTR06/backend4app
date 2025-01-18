@@ -13,5 +13,5 @@ interface TaskRepository : JpaRepository<Task, Long> {
 
     fun findAllByOrderByIdAsc(): Set<Task>
 
-    fun existsByDescription(description: String): Boolean
+    fun existsByTitle(title: String): Boolean
 }

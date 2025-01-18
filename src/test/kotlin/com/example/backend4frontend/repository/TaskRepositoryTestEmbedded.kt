@@ -65,7 +65,7 @@ internal class TaskRepositoryTestEmbedded {
     @Test
     @Sql("classpath:test-data.sql")
     fun `when task created check then check if descriptions already exists`() {
-        val isDescriptionAlreadyGiven = objectUnderTest.existsByDescription("first test todo")
+        val isDescriptionAlreadyGiven = objectUnderTest.existsByTitle("first test todo")
 
         assertThat(isDescriptionAlreadyGiven).isTrue
     }
@@ -73,7 +73,7 @@ internal class TaskRepositoryTestEmbedded {
     @Test
     @Sql("classpath:test-data.sql")
     fun `when task created check then check if descriptions does not exists`() {
-        val isDescriptionAvailable = objectUnderTest.existsByDescription("feed the cat")
+        val isDescriptionAvailable = objectUnderTest.existsByTitle("feed the cat")
 
         assertThat(!isDescriptionAvailable).isTrue
     }

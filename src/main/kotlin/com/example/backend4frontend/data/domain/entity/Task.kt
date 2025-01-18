@@ -18,7 +18,7 @@ import java.time.LocalDateTime
 @Entity
 @Table(
     name = "task",
-    uniqueConstraints = [UniqueConstraint(name = "uk_task_description", columnNames = ["description"])]
+    uniqueConstraints = [UniqueConstraint(name = "uk_task_title", columnNames = ["title"])]
 )
 class Task {
 
@@ -27,12 +27,9 @@ class Task {
     @SequenceGenerator(name = "task_sequence", sequenceName = "task_sequence", allocationSize = 1)
     val id: Long = 0
 
-    @Size(min = MIN_DESCRIPTION_LENGTH, max = MAX_DESCRIPTION_LENGTH)
-    @Column(name = "description", nullable = false, unique = true)
-    var description: String = ""
-
-    @Column(name = "is_reminder_set", nullable = false)
-    var isReminderSet: Boolean = false
+    @Size(min = MIN_DESCRIPTION_LENGTH, max = MAX_TITLE_LENGTH)
+    @Column(name = "title", nullable = false, unique = true)
+    var title: String = ""
 
     @Column(name = "is_task_open", nullable = false)
     var isTaskOpen: Boolean = true
@@ -40,10 +37,10 @@ class Task {
     @Column(name = "created_on", nullable = false)
     var createdOn: LocalDateTime = LocalDateTime.now()
 
+    @Column(name = "closed_on", nullable = true)
+    var closedOn: LocalDateTime? = null
+
     @NotNull
     @Enumerated(EnumType.STRING)
     var priority: Priority = Priority.LOW
 }
-
-const val MIN_DESCRIPTION_LENGTH: Int = 3
-const val MAX_DESCRIPTION_LENGTH: Int = 255
