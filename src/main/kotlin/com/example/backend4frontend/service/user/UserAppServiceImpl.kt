@@ -7,10 +7,10 @@ import com.example.backend4frontend.util.converter.UserMapper
 import org.springframework.stereotype.Service
 
 @Service
-class UserServiceImpl(
+class UserAppServiceImpl(
     private val repository: UserRepository,
     private val mapper: UserMapper
-) : UserService {
+) : UserAppService {
 
     override fun findUserByUsernameAndPassword(userRequest: UserRequest): UserFetchResponse {
         val user = repository.findUserByUsernameAndPassword(userRequest.username, userRequest.password)
