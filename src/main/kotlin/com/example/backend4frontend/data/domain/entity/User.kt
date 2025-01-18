@@ -13,7 +13,7 @@ import jakarta.validation.constraints.Size
 @Entity
 @Table(
     name = "user",
-    uniqueConstraints = [UniqueConstraint(name = "uk_user_title", columnNames = ["username"])]
+    uniqueConstraints = [UniqueConstraint(name = "uk_user_username", columnNames = ["username"])]
 )
 class User {
 
