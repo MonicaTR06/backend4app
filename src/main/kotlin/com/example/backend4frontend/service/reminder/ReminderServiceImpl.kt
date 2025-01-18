@@ -25,11 +25,11 @@ class ReminderServiceImpl(
 ) : ReminderService {
 
     override fun getOpenReminders(isDueToday: Boolean?): Set<ReminderFetchResponse> {
-        return if (isDueToday != null) {
-            repository.findAllByIsDueTodayOrderByIdAsc(isDueToday).map(mapper::toDto).toSet()
+        return /*if (isDueToday != null) {
+            repository.findAllByOrderByIdAsc(isDueToday).map(mapper::toDto).toSet()
         } else {
-            repository.findAllByOrderByIdAsc().map(mapper::toDto).toSet()
-        }
+           */ repository.findAllByOrderByIdAsc().map(mapper::toDto).toSet()
+        //}
     }
 
     override fun getReminderById(id: Long): ReminderFetchResponse {
