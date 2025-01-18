@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RestController
 
 @CrossOrigin
 @RestController
-@RequestMapping("api/v1/tasks")
-class TaskController(private val service: TaskService) {
+@RequestMapping("api/v1/users")
+class UserController(private val service: TaskService) {
 
     @GetMapping
     fun getTasks(

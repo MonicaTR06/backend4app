@@ -1,9 +1,9 @@
-package com.example.backend4frontend.service
+package com.example.backend4frontend.service.task
 
 import com.example.backend4frontend.data.domain.TaskStatus
-import com.example.backend4frontend.data.dto.TaskCreateRequest
-import com.example.backend4frontend.data.dto.TaskFetchResponse
-import com.example.backend4frontend.data.dto.TaskUpdateRequest
+import com.example.backend4frontend.data.dto.task.TaskCreateRequest
+import com.example.backend4frontend.data.dto.task.TaskFetchResponse
+import com.example.backend4frontend.data.dto.task.TaskUpdateRequest
 
 
 interface TaskService {
