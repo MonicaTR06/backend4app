@@ -3,9 +3,11 @@ package com.example.backend4frontend.util.converter
 import com.example.backend4frontend.data.domain.entity.Reminder
 import com.example.backend4frontend.data.dto.reminder.ReminderCreateRequest
 import com.example.backend4frontend.data.dto.reminder.ReminderFetchResponse
+import org.springframework.stereotype.Component
 import java.time.Clock
 import java.time.LocalDateTime
 
+@Component
 class ReminderMapper {
     fun toDto(entity: Reminder) = ReminderFetchResponse(
         entity.id,
