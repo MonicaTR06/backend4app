@@ -9,9 +9,9 @@ interface ReminderRepository : JpaRepository<Reminder, Long> {
 
     fun findReminderById(id: Long): Reminder
 
-    fun findAllOpenByDateOrderByIdAsc(isDueToday: Boolean?): Set<Reminder>
+    //fun findAllByDueTodayOrderByIdAsc(isDueToday: Boolean?): Set<Reminder>
 
-    fun findAllOpenOrderByIdAsc(): Set<Reminder>
+    fun findAllByOrderByIdAsc(): Set<Reminder>
 
     fun existsByTitle(title: String): Boolean
 }
