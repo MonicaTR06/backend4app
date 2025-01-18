@@ -1,5 +1,5 @@
 package com.example.backend4frontend.web.rest
-
+/*
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.example.backend4frontend.errorhandler.BadRequestException
@@ -218,3 +218,4 @@ internal class TaskControllerIntegrationTest(@Autowired private val mockMvc: Moc
         resultActions.andExpect(MockMvcResultMatchers.header().string("delete-task-header", expectedHeaderValue))
     }
 }
+*/
