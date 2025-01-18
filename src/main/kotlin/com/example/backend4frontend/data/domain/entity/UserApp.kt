@@ -12,14 +12,14 @@ import jakarta.validation.constraints.Size
 
 @Entity
 @Table(
-    name = "user",
-    uniqueConstraints = [UniqueConstraint(name = "uk_user_username", columnNames = ["username"])]
+    name = "userapp",
+    uniqueConstraints = [UniqueConstraint(name = "uk_userapp_username", columnNames = ["username"])]
 )
-class User {
+class UserApp {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
-    @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userapp_sequence")
+    @SequenceGenerator(name = "userapp_sequence", sequenceName = "userapp_sequence", allocationSize = 1)
     val id: Long = 0
 
     @Size(min = MIN_DESCRIPTION_LENGTH, max = MAX_USER_LENGTH)
