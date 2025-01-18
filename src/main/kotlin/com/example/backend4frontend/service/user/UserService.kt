@@ -4,5 +4,5 @@ import com.example.backend4frontend.data.dto.user.UserFetchResponse
 import com.example.backend4frontend.data.dto.user.UserRequest
 
 interface UserService {
-    fun findUserByUsernameAndPassword(userRequest: UserRequest): Set<UserFetchResponse>
+    fun findUserByUsernameAndPassword(userRequest: UserRequest): UserFetchResponse
 }

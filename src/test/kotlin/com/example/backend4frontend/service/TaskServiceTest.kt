@@ -57,7 +57,6 @@ internal class TaskServiceTest {
         MockKAnnotations.init(this)
         createRequest = TaskCreateRequest(
             "test task",
-            isReminderSet = false,
             isTaskOpen = false,
             priority = Priority.LOW
         )
@@ -110,8 +109,7 @@ internal class TaskServiceTest {
         val actualTaskFetchDto: TaskFetchResponse = objectUnderTest.createTask(createRequest)
 
         assertThat(actualTaskFetchDto.id).isEqualTo(task.id)
-        assertThat(actualTaskFetchDto.description).isEqualTo(createRequest.description)
-        assertThat(actualTaskFetchDto.isReminderSet).isEqualTo(task.isReminderSet)
+        assertThat(actualTaskFetchDto.title).isEqualTo(createRequest.title)
         assertThat(actualTaskFetchDto.isTaskOpen).isEqualTo(task.isTaskOpen)
         assertThat(actualTaskFetchDto.priority).isEqualTo(task.priority)
         assertThat(actualTaskFetchDto.createdOn).isEqualTo(task.createdOn)
@@ -122,15 +120,14 @@ internal class TaskServiceTest {
         every { mockRepository.existsByTitle(any()) } returns true
         val exception = assertThrows<BadRequestException> { objectUnderTest.createTask(createRequest) }
 
-        assertThat(exception.message).isEqualTo("A task with the description '${createRequest.description}' already exists")
+        assertThat(exception.message).isEqualTo("A task with the title '${createRequest.title}' already exists")
         verify { mockRepository.save(any()) wasNot called }
     }
 
     @Test
     fun `when client wants to create a task with description more than 255 characters then check for bad request exception`() {
         val taskDescriptionTooLong = TaskCreateRequest(
-            description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to,  took a galley of type and scrambled",
-            isReminderSet = true,
+            title = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to,  took a galley of type and scrambled",
             isTaskOpen = true,
             priority = Priority.MEDIUM
         )
@@ -143,8 +140,7 @@ internal class TaskServiceTest {
     @Test
     fun `when client wants to create a task with description less than 3 characters then check for bad request exception`() {
         val taskDescriptionTooShort = TaskCreateRequest(
-            description = "ab",
-            isReminderSet = false,
+            title = "ab",
             isTaskOpen = false,
             priority = Priority.LOW
         )
@@ -157,8 +153,7 @@ internal class TaskServiceTest {
     @Test
     fun `when save task is called then check if argument could be captured`() {
         val taskSlot = slot<Task>()
-        task.description = createRequest.description
-        task.isReminderSet = createRequest.isReminderSet
+        task.title = createRequest.title
         task.isTaskOpen = createRequest.isTaskOpen
         task.createdOn = LocalDateTime.now(
             Clock.fixed(date.atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault())
@@ -174,8 +169,7 @@ internal class TaskServiceTest {
 
         verify { mockRepository.save(capture(taskSlot)) }
         assertThat(actualTaskFetchDto.id).isEqualTo(taskSlot.captured.id)
-        assertThat(actualTaskFetchDto.description).isEqualTo(taskSlot.captured.description)
-        assertThat(actualTaskFetchDto.isReminderSet).isEqualTo(taskSlot.captured.isReminderSet)
+        assertThat(actualTaskFetchDto.title).isEqualTo(taskSlot.captured.title)
         assertThat(actualTaskFetchDto.isTaskOpen).isEqualTo(taskSlot.captured.isTaskOpen)
         assertThat(actualTaskFetchDto.createdOn).isEqualTo(taskSlot.captured.createdOn)
         assertThat(actualTaskFetchDto.priority).isEqualTo(taskSlot.captured.priority)
@@ -183,12 +177,12 @@ internal class TaskServiceTest {
 
     @Test
     fun `when get task by id is called then expect a specific description`() {
-        task.description = "getTaskById"
+        task.title = "getTaskById"
         every { mockRepository.existsById(any()) } returns true
         every { mockRepository.findTaskById(any()) } returns task
         val fetchDto = objectUnderTest.getTaskById(1234)
 
-        assertThat(fetchDto.description).isEqualTo(task.description)
+        assertThat(fetchDto.title).isEqualTo(task.title)
     }
 
     @Test
@@ -235,11 +229,10 @@ internal class TaskServiceTest {
 
     @Test
     fun `when update task is called with task request argument then expect specific description fpr actual task`() {
-        task.description = "test task"
+        task.title = "test task"
         val updateRequest =
             TaskUpdateRequest(
-                task.description,
-                isReminderSet = false,
+                task.title,
                 isTaskOpen = false,
                 priority = Priority.LOW
             )
@@ -249,8 +242,7 @@ internal class TaskServiceTest {
         every { mockRepository.save(any()) } returns task
         val actualTask = objectUnderTest.updateTask(task.id, updateRequest)
 
-        assertThat(actualTask.description).isEqualTo(task.description)
-        assertThat(actualTask.isReminderSet).isEqualTo(task.isReminderSet)
+        assertThat(actualTask.title).isEqualTo(task.title)
         assertThat(actualTask.isTaskOpen).isEqualTo(task.isTaskOpen)
         assertThat(actualTask.createdOn).isEqualTo(task.createdOn)
         assertThat(actualTask.priority).isEqualTo(task.priority)
