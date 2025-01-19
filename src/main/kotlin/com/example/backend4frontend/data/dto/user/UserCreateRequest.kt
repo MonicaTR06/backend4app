@@ -14,9 +14,9 @@ data class UserCreateRequest(
     val password: String,
 
     @Size(min = MIN_EMAIL_LENGTH, max = MIN_EMAIL_LENGTH)
-    val email: String,
+    val email: String? = null,
 
-    val photo: String,
+    val photo: String? = null,
 
-    val cellphone: String
+    val cellphone: String? = null
 )
