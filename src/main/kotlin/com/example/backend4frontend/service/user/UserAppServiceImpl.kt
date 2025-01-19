@@ -15,8 +15,7 @@ class UserAppServiceImpl(
 ) : UserAppService {
 
     override fun findUserByUsernameAndPassword(userRequest: UserRequest): UserFetchResponse {
-        val user =
-            repository.findUserByUsernameAndPassword(userRequest.username, userRequest.password)
+        val user = repository.findUserByUsernameAndPassword(userRequest.username, userRequest.password)
         return mapper.toDto(user)
     }
 
